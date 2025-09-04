@@ -1,0 +1,8 @@
+# Baseline configuration for examples
+remote = "mainnet"
+lifecycle = "replica"
+listen = "0.0.0.0:9000"
+storage = "/etc/magic-block/storage"
+
+[validator]
+base-fee = 5000

@@ -8,7 +8,7 @@
 use clap::{Parser, ValueEnum};
 use figment::{
     Figment,
-    providers::{Format, Serialized, Toml},
+    providers::{Env, Format, Serialized, Toml},
 };
 use isocountry::CountryCode;
 use serde::{Deserialize, Serialize};
@@ -408,6 +408,7 @@ fn main() -> Result<(), figment::Error> {
     // Layer 3: Merge the command-line arguments. Any args provided will
     // override values from the config file and the defaults.
     figment = figment.join(Serialized::from(MagicBlockParams::default(), "defaults"));
+    figment = figment.merge(Env::prefixed("MBV_"));
 
     // Extract the final, layered configuration into our struct.
     let config: MagicBlockParams = figment.extract()?;

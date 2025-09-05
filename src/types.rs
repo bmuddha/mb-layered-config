@@ -25,7 +25,7 @@ impl Default for BindAddress {
 pub struct SerdePubkey(pub Pubkey);
 
 /// A wrapper for `solana_keypair::Keypair` to enable Serde.
-#[derive(DeserializeFromStr, SerializeDisplay)]
+#[derive(DeserializeFromStr, SerializeDisplay, PartialEq)]
 pub struct SerdeKeypair(pub Keypair);
 
 impl Clone for SerdeKeypair {

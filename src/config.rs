@@ -4,7 +4,7 @@ use clap::Parser;
 use isocountry::CountryCode;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
-use std::time::Duration;
+use std::{alloc::GlobalAlloc, time::Duration};
 use url::Url;
 
 //==============================================================================
@@ -17,10 +17,11 @@ use url::Url;
 #[clap(rename_all = "kebab-case")]
 pub struct ValidatorConfig {
     /// Base fee in lamports for transactions.
-    #[arg(long, default_value = "0")]
+    #[arg(long, env = "MBV_BASEFEE", default_value = consts::DEFAULT_BASE_FEE_STR)]
     pub basefee: u64,
+
     /// The validator's identity keypair, encoded in Base58.
-    #[arg(long, short, default_value = consts::DEFAULT_VALIDATOR_KEYPAIR)]
+    #[arg(long, short, env = "MBV_KEYPAIR", default_value = consts::DEFAULT_VALIDATOR_KEYPAIR)]
     pub keypair: SerdeKeypair,
 }
 

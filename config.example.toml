@@ -1,0 +1,136 @@
+# Magic Block Configuration - Example File
+#
+# This file documents all available configuration options. You can copy this
+# file to `config.toml` and modify it to your needs.
+#
+# Note: Any value set here will override the application's internal defaults
+# and any CLI arguments. Environment variables will, in turn, override any
+# value set in this file.
+#
+
+# -- Top-Level Settings --
+
+# The remote Solana cluster to connect to.
+# Thanks to `serde(untagged)`, this can be specified in several simple ways.
+#
+# 1. Simple Alias or URL (most common):
+#    A plain string is treated as a single, unified cluster connection.
+#    Predefined aliases: "mainnet", "devnet", "testnet", "localhost".
+remote = "devnet"
+
+# 2. Disjointed HTTP and WebSocket URLs:
+#    A TOML table with `http` and `ws` keys is treated as a single cluster
+#    with separate endpoints.
+#    Uncomment the line below and comment out the simple `remote` line to use this.
+# remote = { http = "https://my-custom-rpc-node.com", ws = "wss://my-custom-ws-stream.com" }
+#
+# 3. Multiple Remotes (for redundancy or complex setups):
+#    A TOML array is treated as a list of remote clusters. Each item in the
+#    array can be a simple string (unified) or a table (disjointed).
+#    Uncomment the line below and comment out the simple `remote` line to use this.
+# remote = [
+#   "mainnet", # First remote is a simple unified URL
+#   { http = "https://backup-rpc.com", ws = "wss://backup-ws.com" }, # Second remote is disjointed
+# ]
+
+
+# The application's operational mode.
+# Possible values: "ephemeral", "replica", "offline", "programs-replica".
+lifecycle = "programs-replica"
+
+# The root directory for all application storage, including the ledger and accounts database.
+# If not set, a temporary directory may be used.
+storage = "/var/lib/magic-block/data"
+
+# The primary listen address for the main RPC service.
+listen = "127.0.0.1:8899"
+
+# The listen address for the metrics endpoint (e.g., for Prometheus).
+# If this is commented out or not present, the metrics service will be disabled.
+metrics = "127.0.0.1:9100"
+
+
+# -- Validator Configuration --
+# These settings control the behavior of the validator node.
+[validator]
+
+# The base fee in lamports charged for transactions.
+base-fee = 0
+
+# The validator's identity keypair, encoded as a Base58 string.
+# This is a sensitive value and should be handled securely.
+keypair = "9Vo7TbA5YfC5a33JhAi9Fb41usA6JwecHNRw3f9MzzHAM8hFnXTzL5DcEHwsAFjuUZ8vNQcJ4XziRFpMc3gTgBQ"
+
+
+# -- On-Chain Operations & Identity --
+# This section is optional. If present, it configures the validator's public identity
+# and automated on-chain tasks.
+[chain-operation]
+
+# The validator's two-letter country code for location-based services (e.g., "US", "GE").
+country-code = "US"
+
+# The validator's fully qualified domain name (FQDN).
+fqdn = "https://my-validator.com"
+
+# How often the validator should attempt to claim fees from the chain, in seconds.
+# For example, 86400 means once per day.
+claim-fees-frequency = 86400
+
+
+# -- Transaction Commit Strategy --
+# These settings are for file-only configuration and control how
+# transactions are submitted to the ledger.
+[commit]
+
+# The compute unit price in micro-lamports offered for commit transactions.
+compute-unit-price = 1000000
+
+
+# -- Ledger Database Settings --
+[ledger]
+
+# The number of blocks to store in a single ledger partition file.
+blocks-per-partition = 1048576
+
+# The target time per block. Can be a number in seconds or a human-readable
+# string like "400ms", "1s", etc.
+block-time = "400ms"
+
+# If true, the ledger will be wiped and reset on startup.
+# Set to `false` in production to persist the ledger between restarts.
+reset = true
+
+
+# -- Accounts Database Settings --
+[accounts-db]
+
+# Total size of the memory-mapped database file in bytes.
+database-size = 104857600 # 100 MiB
+
+# The size of individual blocks within the database.
+# Possible values: "Block128", "Block256", "Block512".
+block-size = "Block256"
+
+# The size of the index used for account lookups, in bytes.
+index-size = 1048576 # 1 MiB
+
+# The maximum number of historical snapshots to retain on disk.
+max-snapshots = 4
+
+# How often (in number of blocks) to create a new snapshot.
+snapshot-frequency = 1024
+
+
+# -- Chainlink Integration Settings --
+# Optional configuration for ChainLink oracle features.
+[chainlink]
+
+# If true, the application will prepare ChainLink lookup tables on startup.
+prepare-lookup-tables = false
+
+# The amount of lamports to airdrop to new accounts automatically.
+auto-airdrop-lamports = 0
+
+# The maximum number of ChainLink price feed accounts to monitor.
+max-monitored-accounts = 0

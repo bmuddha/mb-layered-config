@@ -1,12 +1,12 @@
 use crate::consts;
 use derive_more::Display;
 use serde::{Deserialize, Serialize};
-use serde_with::{DisplayFromStr, serde_as};
+use serde_with::{serde_as, DisplayFromStr};
 use std::str::FromStr;
 use url::Url;
 
 /// A connection to one or more remote clusters.
-#[derive(Deserialize, Serialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 #[serde(rename_all = "kebab-case", untagged)]
 pub enum RemoteCluster {
     Single(Remote),
@@ -30,7 +30,7 @@ impl Default for RemoteCluster {
 
 /// A connection to a single remote node.
 #[serde_as]
-#[derive(Deserialize, Serialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 #[serde(rename_all = "kebab-case", untagged)]
 pub enum Remote {
     /// A single URL for both HTTP and WebSocket connections.
@@ -45,7 +45,7 @@ pub enum Remote {
 }
 
 /// A URL that can be aliased with shortcuts like "mainnet".
-#[derive(Clone, Debug, Deserialize, Serialize, Display)]
+#[derive(Clone, Debug, Deserialize, Serialize, Display, PartialEq)]
 pub struct AliasedUrl(pub Url);
 
 impl FromStr for AliasedUrl {

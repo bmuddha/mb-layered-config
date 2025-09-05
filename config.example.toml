@@ -73,9 +73,8 @@ country-code = "US"
 # The validator's fully qualified domain name (FQDN).
 fqdn = "https://my-validator.com"
 
-# How often the validator should attempt to claim fees from the chain, in seconds.
-# For example, 86400 means once per day.
-claim-fees-frequency = 86400
+# How often the validator should attempt to claim fees from the chain (human-readable)
+claim-fees-frequency = "1h"
 
 
 # -- Transaction Commit Strategy --

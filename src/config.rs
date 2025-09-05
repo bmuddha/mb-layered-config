@@ -1,10 +1,11 @@
 use crate::consts;
 use crate::types::SerdeKeypair;
 use clap::Parser;
+use consts::{DEFAULT_BASE_FEE_STR, DEFAULT_VALIDATOR_KEYPAIR};
 use isocountry::CountryCode;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
-use std::{alloc::GlobalAlloc, time::Duration};
+use std::time::Duration;
 use url::Url;
 
 //==============================================================================
@@ -17,11 +18,11 @@ use url::Url;
 #[clap(rename_all = "kebab-case")]
 pub struct ValidatorConfig {
     /// Base fee in lamports for transactions.
-    #[arg(long, env = "MBV_BASEFEE", default_value = consts::DEFAULT_BASE_FEE_STR)]
+    #[arg(long, env = "MBV_VALIDATOR_BASEFEE", default_value = DEFAULT_BASE_FEE_STR)]
     pub basefee: u64,
 
     /// The validator's identity keypair, encoded in Base58.
-    #[arg(long, short, env = "MBV_KEYPAIR", default_value = consts::DEFAULT_VALIDATOR_KEYPAIR)]
+    #[arg(long, short, env = "MBV_VALIDATOR_KEYPAIR", default_value = DEFAULT_VALIDATOR_KEYPAIR)]
     pub keypair: SerdeKeypair,
 }
 
@@ -126,6 +127,7 @@ impl Default for AccountsDbConfig {
 
 /// Block size for the accounts DB.
 #[derive(Deserialize, Serialize, Debug, Default, Clone, Copy)]
+#[serde(rename_all = "kebab-case")]
 pub enum BlockSize {
     Block128 = 128,
     #[default]
